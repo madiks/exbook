@@ -3,7 +3,6 @@ package controllers
 import (
 	"encoding/json"
 	"exbook/models"
-	"fmt"
 	"strconv"
 	"time"
 )
@@ -132,7 +131,7 @@ func (this *BookMarkController) Get() {
 		}
 		tlist = append(tlist, tin)
 	}
-	fmt.Print(tlist)
+	//fmt.Print(tlist)
 	//fmt.Println("1111")
 	//收藏的书籍
 	var listb []*models.Bookmark

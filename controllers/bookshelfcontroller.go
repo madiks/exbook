@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"exbook/models"
-	"fmt"
+	//"fmt"
 	"strconv"
 	"time"
 )
@@ -58,7 +58,7 @@ func (this *BookShelfController) Get() {
 		bse.Dbalt = bk.Dbalt
 		Bks = append(Bks, bse)
 	}
-	fmt.Print(Bks)
+	//fmt.Print(Bks)
 	this.Data["Bks"] = Bks
 	this.Data["PageTitle"] = "我的书架"
 	this.Data["IsBookShelf"] = true
@@ -113,7 +113,7 @@ func (this *BookShelfController) GetInv() {
 			var stri = "<div class='col-md-2 column productbox' id='ofgooddiv" + sid + "'><img src='" + bse.Image + "' class='img-responsive' style='height:110px;weight:80px'><div class='producttitle'>" + bse.Title + "</div><div class='productprice'><div class='pull-right'><button actname='" + sid + "' class='btn btn-info btn-sm ofgood' role='button'>添加</button></div><div class='pricetext'>" + bse.NOrate + "</div></div></div>"
 			str = str + stri
 		}
-		fmt.Print(Bks)
+		//fmt.Print(Bks)
 
 		this.Data["json"] = str
 	} else {

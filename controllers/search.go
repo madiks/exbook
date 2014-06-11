@@ -3,7 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"exbook/models"
-	"fmt"
+	//"fmt"
 	"github.com/astaxie/beego/orm"
 	"strconv"
 	"time"
@@ -113,16 +113,16 @@ func (this *SearchController) SearchT() {
 		page = 1
 	}
 	var pagesize int = 8
-	fmt.Println("----------------------------参数-------------------------------")
-	fmt.Println(l)
-	fmt.Println(r)
+	//fmt.Println("----------------------------参数-------------------------------")
+	//fmt.Println(l)
+	//fmt.Println(r)
 	if l == "0" && r != "0" {
 		var ividl []int64
 		var sqlcon string = ""
 		o := orm.NewOrm()
 		o.Raw("select id from inventory where bid = ?", r).QueryRows(&ividl)
-		fmt.Println("**********************左执行结果******************************888")
-		fmt.Println(ividl)
+		//fmt.Println("**********************左执行结果******************************888")
+		//fmt.Println(ividl)
 		//o.Raw("SELECT count(*) FROM trades WHERE region= ? AND wantlist LIKE ? ORDER BY update_time desc", this.Region, "[%"+r+"%]").QueryRow(&num)
 		for k, v := range ividl {
 			sqlcon += "selllist LIKE '%," + strconv.Itoa(int(v)) + ",%'"
@@ -135,7 +135,7 @@ func (this *SearchController) SearchT() {
 		q2 := "SELECT * FROM trades WHERE region= '" + this.Region + "' AND (" + sqlcon + ") ORDER BY update_time desc limit " + strconv.Itoa((page-1)*pagesize) + "," + strconv.Itoa(pagesize)
 		o.Raw(q2).QueryRows(&list)
 	} else if l != "0" && r == "0" {
-		fmt.Println("0000000**********************右执行结果******************************888")
+		//fmt.Println("0000000**********************右执行结果******************************888")
 		o := orm.NewOrm()
 		o.Raw("SELECT count(*) FROM trades WHERE region= ? AND wantlist LIKE ? ORDER BY update_time desc", this.Region, "[%,"+l+",%]").QueryRow(&num)
 		o.Raw("SELECT * FROM trades WHERE region= ? AND wantlist LIKE ? ORDER BY update_time desc limit ?,?", this.Region, "[%,"+l+",%]", (page-1)*pagesize, pagesize).QueryRows(&list)
@@ -253,8 +253,8 @@ func (this *SearchController) SearchT() {
 	}
 	this.Data["trades"] = tlist
 	this.Data["pagebar"] = models.NewPager(int64(page), num, int64(pagesize), "/trade/search?left="+l+"&right="+r).ToString()
-	fmt.Println(num)
-	fmt.Println("-----------------------doS--------------------------")
+	//fmt.Println(num)
+	//fmt.Println("-----------------------doS--------------------------")
 	this.Data["PageTitle"] = "搜索结果"
 	this.Data["IsAddTrade"] = true
 	this.Layout = "layout/default.html"

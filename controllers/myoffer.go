@@ -3,7 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"exbook/models"
-	"fmt"
+	//"fmt"
 	"github.com/astaxie/beego/orm"
 	"strconv"
 	"time"
@@ -148,7 +148,7 @@ func (this *MyOfferController) Get() {
 			}
 			tlist = append(tlist, tin)
 		}
-		fmt.Println(tlist)
+		//fmt.Println(tlist)
 		this.Data["trades"] = tlist
 	} else {
 		Isempty = true
@@ -272,7 +272,7 @@ func (this *MyOfferController) Show() {
 		}
 		tin.Wants = bis
 	}
-	fmt.Print(tin)
+	//fmt.Print(tin)
 	//读取offer和回复offer
 	type Rpofr struct {
 		Rfid         int64
@@ -308,7 +308,7 @@ func (this *MyOfferController) Show() {
 	if counto > 0 {
 		queryo.OrderBy("-create_time").All(&olist)
 	}
-	fmt.Print(olist)
+	//fmt.Print(olist)
 	var oflistinfo []Ofst
 	for k, _ := range olist {
 		var ofi Ofst
@@ -393,7 +393,7 @@ func (this *MyOfferController) Show() {
 		ofi.Replylist = rfi
 		oflistinfo = append(oflistinfo, ofi)
 	}
-	fmt.Print(oflistinfo)
+	//fmt.Print(oflistinfo)
 	this.Data["oflist"] = oflistinfo
 	this.Data["tin"] = tin
 	this.Data["PageTitle"] = "我的报价"
@@ -428,15 +428,15 @@ func (this *MyOfferController) DeletePostReply() {
 func (this *MyOfferController) GetTraderInfo() {
 	oid, _ := strconv.Atoi(this.GetString("Oid"))
 	var ofr models.Offers
-	fmt.Println("****************************************************************")
+	//fmt.Println("****************************************************************")
 	ofr.Id = int64(oid)
 	ofr.Read()
-	fmt.Println(ofr)
+	//fmt.Println(ofr)
 	var uinfo models.User
 	uinfo.Id = ofr.Tcid
 	uinfo.Read()
 
-	fmt.Println(uinfo)
+	//fmt.Println(uinfo)
 	var str string = "Ta的联系电话：" + uinfo.Tel + "<br>Ta的地址：" + uinfo.Address
 	this.Data["json"] = str
 	this.ServeJson()

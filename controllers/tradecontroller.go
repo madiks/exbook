@@ -3,7 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"exbook/models"
-	"fmt"
+	//"fmt"
 	"strconv"
 	"time"
 )
@@ -124,7 +124,7 @@ func (this *TradeController) Show() {
 		}
 		tin.Wants = bis
 	}
-	fmt.Print(tin)
+	//fmt.Print(tin)
 	//读取offer和回复offer
 	type Rpofr struct {
 		Rfid       int64
@@ -160,7 +160,7 @@ func (this *TradeController) Show() {
 	if counto > 0 {
 		queryo.OrderBy("-create_time").All(&olist)
 	}
-	fmt.Print(olist)
+	//fmt.Print(olist)
 	var oflistinfo []Ofst
 	for k, _ := range olist {
 		var ofi Ofst
@@ -237,7 +237,7 @@ func (this *TradeController) Show() {
 		ofi.Replylist = rfi
 		oflistinfo = append(oflistinfo, ofi)
 	}
-	fmt.Print(oflistinfo)
+	//fmt.Print(oflistinfo)
 	this.Data["oflist"] = oflistinfo
 	this.Data["tin"] = tin
 	this.Data["PageTitle"] = "交换"

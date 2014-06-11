@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"exbook/models"
-	"fmt"
+	//"fmt"
 	"github.com/astaxie/beego/httplib"
 	"github.com/astaxie/beego/orm"
 	"strconv"
@@ -65,7 +65,7 @@ func (this *GetBookController) Getbinfo() {
 			bki.Isprivate = 0
 			bki.Insert()
 			this.Data["json"] = bki
-			fmt.Print("db1111")
+			//fmt.Print("db1111")
 		}
 
 	}
