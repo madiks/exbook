@@ -1,0 +1,150 @@
+<style  type="text/css">
+
+.user-details {position: relative; padding: 0;}
+.user-details .user-image {position: relative;  z-index: 1; width: 100%; text-align: center;}
+
+.user-details .user-info-block {width: 100%; top: 55px; background: rgb(255, 255, 255); z-index: 0; padding-top: 35px;}
+ .user-info-block .user-heading {width: 100%; text-align: center; margin: 10px 0 0;}
+ .user-info-block .navigation {float: left; width: 100%; margin: 0; padding: 0; list-style: none; border-bottom: 1px solid #428BCA; border-top: 1px solid #428BCA;}
+  .navigation li {float: left; margin: 0; padding: 0;}
+   .navigation li a {padding: 20px 30px; float: left;}
+   .navigation li.active a {background: #428BCA; color: #fff;}
+ .user-info-block .user-body {float: left; padding: 5%; width: 90%;}
+  .user-body .tab-content > div {float: left; width: 100%;}
+  .user-body .tab-content h4 {width: 100%; margin: 10px 0; color: #333;}
+</style>
+
+<div class="row userpro">
+		<div class="col-sm-12 col-md-12 user-details">
+            <div class="user-info-block">
+                <div class="user-heading">
+                    <h3>{{.Uname}}</h3>
+                    <span class="help-block">现居城市 : {{.Region}}</span>
+                </div>
+                <ul class="navigation">
+                    <li class="active">
+                        <a data-toggle="tab" href="#information" title="完善个人信息">
+                            <span class="glyphicon glyphicon-user" ></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a data-toggle="tab" href="#settings" title="修改资料">
+                            <span class="glyphicon glyphicon-cog" ></span>
+                        </a>
+                    </li>
+                   <!--  <li>
+                        <a data-toggle="tab" href="#email" title="信箱">
+                            <span class="glyphicon glyphicon-envelope" ></span>
+                        </a>
+                    </li> -->
+                    
+                </ul>
+                <div class="user-body">
+                    <div class="tab-content">
+                   
+                        <div id="information" class="tab-pane active">
+                         <h4>完善个人资料</h4>
+                            <form role="form" method="post" action="/myprofile/update">
+                            	<div class="form-group">
+                            	  <label for="InputTname">真实姓名</label>
+                            	  <input type="input" class="form-control" id="InputTname" name="tname" placeholder="请输入您的真实姓名" value="{{.uinfo.Tname}}">
+                            	</div>
+                            	<div class="form-group">
+                            	  <label for="InputPhone">电话</label>
+                            	  <input type="input" class="form-control" id="InputPhone" name="tel" placeholder="请输入您的手机号码" value="{{.uinfo.Tel}}">
+                            	</div>
+                            	<div class="form-group">
+                                <label for="InputAddress">地址</label>
+                                <input type="input" class="form-control" id="InputAddress" name="address" placeholder="请输入你现在的住址" value="{{.uinfo.Address}}">
+                              </div>
+                              	<!-- <div class="form-group">
+                                  <label for="InputCity">现居住城市</label>
+                                	<select class="form-control" id="InputCity" name="region">
+                                	{{range $k,$v := .rglist}}
+                                	  <option {{if $v.Isthis}}selected{{end}} value="{{$v.Region}}">{{$v.Region}}</option>
+                                	 {{end}}
+                                	</select>
+                                </div> -->
+                              <div class="form-group">
+                                <label for="InputEmail">电子邮件</label>
+                                <input type="email" class="form-control" id="InputEmail" name="email" placeholder="输入您的电子邮件地址" value="{{.uinfo.Email}}">
+                              </div>
+                              
+                              <button type="submit" onclick="return check()" class="btn btn-default">确认修改</button>
+                            </form>
+                        </div>
+                        <div id="settings" class="tab-pane">
+                           <h4>修改密码</h4>
+                              <form role="form" method="post" action="/myprofile/changepwd">
+                              	<div class="form-group">
+                              	  <label for="Inputpwd">输入新密码</label>
+                              	  <input type="password" class="form-control" id="Inputpwd" name="pwd" placeholder="请输入您的新密码">
+                              	</div>
+                              	<div class="form-group">
+                              	  <label for="Inputpwds">再次输入新密码</label>
+                              	  <input type="password" class="form-control" id="Inputpwds" name="pwds" placeholder="请再次输入您的新密码" >
+                              	</div>
+                              	
+                                
+                                <button type="submit" onclick="return cpassword()" class="btn btn-default">确认修改</button>
+                              </form>
+                        </div>
+                       <!--  <div id="email" class="tab-pane">
+                            <h4>Send Message</h4>
+                        </div> -->
+                     
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+ <script type="text/javascript">
+   function phone(){
+        var phone = $("#InputPhone").val();
+        if(phone!=""){
+	        var reg01 = new RegExp(/^0?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/);
+	        if(!reg01.test(phone)){
+	          alert("请输入正确的手机号码!");
+	          return false;
+	        }
+	    }
+        return true;
+    }
+
+  function cemail(){
+  	var mail = $('#InputEmail').val();
+	 if (mail!=''){//判断
+	    var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+	    if (!reg.test(mail)) {
+	        alert('邮箱格式不正确，请重新填写!');
+	       return false;
+	 	}
+  	}
+  	return true;
+ }
+
+ function cpassword(){
+    var ps = $("#Inputpwd").val();
+    var pass = $("#Inputpwds").val();
+   if(ps.length==""||pass.length==""){
+     alert("密码不能为空！");
+     return false;
+   }else if(ps != pass){
+     alert("两次输入密码不一致!");
+     return false;
+   }
+   return true;
+ }
+
+ function check()
+ {      
+     if (!phone())
+     {
+       return false;
+     }
+     if(!cemail()){
+       return false;
+     }
+     return true;
+ } 
+ </script>

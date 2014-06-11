@@ -1,0 +1,106 @@
+<style  type="text/css">
+
+</style>
+<script src="/static/js/bwizard.min.js"></script>
+<link rel="stylesheet" href="/static/css/bwizard.min.css">
+
+<div class="row" style="padding-left:25px;padding-right:25px;margin-bottom:50px">
+
+			<h2>
+				<b>添加书籍</b>.
+				<small>感谢豆瓣网提供的图书API服务.</small>
+			</h2>
+			<div id="wizard">
+				<ol>
+					<li>输入图书ISBN号</li>
+					<li>确认图书信息</li>
+					<li>完成添加</li>
+				</ol>
+				<div>
+					<input type="text" id="isbnnum" class="form-control col-md-8" placeholder="请输入ISBN">
+					
+					<p style="margin-top:10px;">
+					<img src="/static/img/add_book_isbn_tip.png" alt="isbn tip" class="img-rounded">
+						ISBN码为书籍背面的条形码处的数字串或您可以上豆瓣网搜书名得到书籍的ISBN
+					</p>
+				</div>
+				<div>
+					<p></p>
+				</div>
+				<div>
+					<label for="disabledSelect">选择书籍新建程度:</label>
+					<input type="hidden" id="bid">
+					<select class="form-control" id="norate">
+					  <option value="全新">全新</option>
+					  <option value="9成新">9成新</option>
+					  <option value="8成新">8成新</option>
+					  <option value="7成新">7成新</option>
+					  <option value="6成新">6成新</option>
+					  <option value="5成新">5成新</option>
+					</select>
+				</div>
+				
+			</div>
+			<button type="button" class="btn btn-info btn-lg pull-right nextbtn" >下一步</button>
+        
+</div>
+<script type="text/javascript">
+   $("#wizard").bwizard({clickableSteps: false},{nextBtnText: ""},{backBtnText: ""});
+   //$("#wizard").bwizard("show","0");
+
+$("body").on("click",".nextbtn",function(){
+	isbn = $("#isbnnum").val()
+
+	if(isbn != ""){
+		$.ajax({
+		 url:"/book/getbook",
+		 type:"post",dataType:"json",
+		 timeout:"10000",
+		 data:{
+		   "Isbn":isbn,
+		 },
+		 success:function(data){
+		   //alert(data.Title)
+		   if(data!=null){
+		   div2 = "<img class='img-rounded' src='"+data.Image+"'><p>"+data.Title+"<br>ISBN:"+isbn+"<br>作者:"+data.Author+"<br><a href='"+data.Dbalt+"' target='_blank'>豆瓣链接</a></p>";
+		   $("#step2").html(div2);
+
+		   $("#wizard").bwizard("show","1");
+		    $(".nextbtn").html("确认图书信息");
+		   $(".nextbtn").addClass("step3btn");
+		  $("#bid").val(data.Id);
+		  }else{
+				alert("未找到图书，请检查ISBN是否输入正确！");
+			}
+		 }
+		});
+	}else{
+		alert("请输入ISBN！");
+	}
+});
+
+$("body").on("click",".step3btn",function(){
+	$("#wizard").bwizard("show","2");
+	$(".step3btn").html("完成");
+	$(".step3btn").addClass("laststep");
+});
+
+$("body").on("click",".laststep",function(){
+	bid = $("#bid").val();
+	norate = $("#norate").val();
+	if(norate != ""){
+		$.ajax({
+		 url:"/book/addinv",
+		 type:"post",dataType:"json",
+		 timeout:"10000",
+		 data:{
+		   "Bid":bid,
+		   "Norate":norate
+		 },success:function(data){
+		  alert("添加书籍成功！");
+		  window.location = "/addbook";
+		 }
+		});
+	}
+});
+</script>

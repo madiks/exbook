@@ -1,0 +1,90 @@
+<style  type="text/css">
+.productbox {
+    background-color:#ffffff;
+	padding:10px;
+	margin-bottom:10px;
+	-webkit-box-shadow: 0 8px 6px -6px  #999;
+	   -moz-box-shadow: 0 8px 6px -6px  #999;
+	        box-shadow: 0 8px 6px -6px #999;
+}
+
+.producttitle {
+    font-weight:bold;
+	padding:5px 0 5px 0;
+}
+
+.productprice {
+	border-top:1px solid #dadada;
+	padding-top:5px;
+}
+
+.pricetext {
+	font-weight:bold;
+	font-size:1.4em;
+}
+</style>
+
+<h3>我的书架<a class="btn btn-primary pull-right" href="/addbook"><span class="glyphicon glyphicon-plus"></span>添加书籍</a></h3>
+<div class="row" style="padding-left:25px;padding-right:25px;">
+	<div class="well row">
+  {{if .isempty}}
+  <div class="alert alert-warning"><h4>您的书架还没有图书，可以点击“添加书籍”来添加.</h4></div>
+  {{end}}
+	{{range $k, $v := .Bks}}
+		<div class="col-md-2 column productbox" style="border-right:1px solid #dadada;">
+			<div>
+		    <img src="{{$v.Image}}" class="img-responsive" style="height:110px;weight:80px">
+		    <div class="producttitle">{{$v.Title}}</div>
+		    <div class="productprice"><div class="pull-right"><a href="{{$v.Dbalt}}" class="btn btn-success btn-sm addbfav" role="button" target="_blank">豆瓣</a></div><div class="pricetext">{{$v.NOrate}}</div></div>
+		    <div class="producttitle"><button class="btn btn-danger btn-sm btndel" actname="{{$v.Id}}" data-title="Delete" data-toggle="modal" data-target="#delete" data-placement="top" rel="tooltip" data-original-title="" title="删除"><i class="fa fa-trash-o"></i>移除</button></div>
+		    </div>
+		</div>
+	{{end}}
+		
+		
+
+	</div>
+</div>
+
+
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+            <div class="modal-dialog">
+          <div class="modal-content">
+                <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              <h4 class="modal-title custom_align" id="Heading">移除</h4>
+            </div>
+                <div class="modal-body">
+             
+             <div class="alert alert-warning"><span class="glyphicon glyphicon-warning-sign"></span> 确定从书架移除该书籍?</div>
+             
+            </div>
+              <div class="modal-footer ">
+              <button type="button" class="btn btn-primary" id="suredel" actname="" ><i class="fa fa-check"></i></span>确定</button>
+              <button type="button" class="btn btn-warning" id="canceldel"><i class="fa fa-times"></i>取消</button>
+            </div>
+              </div>
+          <!-- /.modal-content --> 
+        </div>
+            <!-- /.modal-dialog --> 
+          </div>
+
+<script type="text/javascript">
+ $("body").on("click",".btndel",function(){
+          act = $(this).attr("actname");
+          $("#suredel").attr("actname",act);
+        });
+
+$("body").on("click","#suredel",function(){
+  act = $(this).attr("actname");
+   url = "/bookinv/rmbook/"+act;
+  //alert(url);
+  if(url!=""){
+      window.location = url;
+  }
+});
+
+ $("body").on("click","#canceldel",function(){
+          $('#delete').modal('hide')
+        });
+</script>

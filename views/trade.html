@@ -1,0 +1,455 @@
+<style  type="text/css">
+.productbox {
+    background-color:#ffffff;
+	padding:10px;
+	margin-bottom:10px;
+	-webkit-box-shadow: 0 8px 6px -6px  #999;
+	   -moz-box-shadow: 0 8px 6px -6px  #999;
+	        box-shadow: 0 8px 6px -6px #999;
+}
+
+.producttitle {
+    font-weight:bold;
+	padding:5px 0 5px 0;
+}
+
+.productprice {
+	border-top:1px solid #dadada;
+	padding-top:5px;
+}
+
+.pricetext {
+	font-weight:bold;
+	font-size:1.4em;
+}
+
+.timeline {
+  list-style: none;
+  padding: 20px 0 20px;
+  position: relative;
+}
+.timeline:before {
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  content: " ";
+  width: 3px;
+  background-color: #eeeeee;
+  right: 25px;
+  margin-left: -1.5px;
+}
+.timeline > li {
+  margin-bottom: 20px;
+  position: relative;
+}
+.timeline > li:before,
+.timeline > li:after {
+  content: " ";
+  display: table;
+}
+.timeline > li:after {
+  clear: both;
+}
+.timeline > li:before,
+.timeline > li:after {
+  content: " ";
+  display: table;
+}
+.timeline > li:after {
+  clear: both;
+}
+.timeline > li > .timeline-panel {
+  width: calc( 100% - 75px );
+  float: left;
+  border: 1px solid #d4d4d4;
+  border-radius: 2px;
+  padding: 20px;
+  position: relative;
+  -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
+}
+.timeline > li > .timeline-panel:before {
+  position: absolute;
+  top: 26px;
+  right: -15px;
+  display: inline-block;
+  border-top: 15px solid transparent;
+  border-left: 15px solid #ccc;
+  border-right: 0 solid #ccc;
+  border-bottom: 15px solid transparent;
+  content: " ";
+}
+.timeline > li > .timeline-panel:after {
+  position: absolute;
+  top: 27px;
+  right: -14px;
+  display: inline-block;
+  border-top: 14px solid transparent;
+  border-left: 14px solid #fff;
+  border-right: 0 solid #fff;
+  border-bottom: 14px solid transparent;
+  content: " ";
+}
+.timeline > li > .timeline-badge {
+  color: #fff;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 1.4em;
+  text-align: center;
+  position: absolute;
+  top: 16px;
+  right: 0px;
+  margin-left: -25px;
+  background-color: #999999;
+  z-index: 100;
+  border-top-right-radius: 50%;
+  border-top-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  border-bottom-left-radius: 50%;
+}
+.timeline > li.timeline-inverted > .timeline-panel {
+  float: right;
+}
+.timeline > li.timeline-inverted > .timeline-panel:before {
+  border-left-width: 0;
+  border-right-width: 15px;
+  left: -15px;
+  right: auto;
+}
+.timeline > li.timeline-inverted > .timeline-panel:after {
+  border-left-width: 0;
+  border-right-width: 14px;
+  left: -14px;
+  right: auto;
+}
+.timeline-badge.primary {
+  background-color: #2e6da4 !important;
+}
+.timeline-badge.success {
+  background-color: #3f903f !important;
+}
+.timeline-badge.warning {
+  background-color: #f0ad4e !important;
+}
+.timeline-badge.danger {
+  background-color: #d9534f !important;
+}
+.timeline-badge.info {
+  background-color: #5bc0de !important;
+}
+.timeline-title {
+  margin-top: 0;
+  color: inherit;
+}
+.timeline-body > p,
+.timeline-body > ul {
+  margin-bottom: 0;
+}
+.timeline-body > p + p {
+  margin-top: 5px;
+}
+
+</style>
+
+<div class="row" style="padding-left:25px;padding-right:25px;">
+	<div class="tradelist row well"  title="{{.tin.Remark}}">
+  <input type="hidden" value="{{.tin.Id}}" id="tradeid">
+  <input type="hidden" value="{{.tin.Uid}}" id="tcid">
+		<h5><a href="/trade/{{.tin.Id}}"><span class="glyphicon glyphicon-user">{{.tin.Uname}}</span></a> 想要交换:({{.tin.UpdateTime}}) <button class="pull-right addtfav btn btn-primary" act="{{.tin.Id}}"><span class="glyphicon glyphicon-bookmark"></span>收藏交换</button></h5>
+		<div class="col-xs-5 col-md-5 left_content">
+		   <div class="row">
+		   		{{range $kk, $vv := .tin.Sells}}
+		   		<div class="col-md-3 column productbox">
+		   		    <img src="{{$vv.Bimg}}" class="img-responsive" style="height:110px;weight:80px">
+		   		    <div class="producttitle">{{$vv.Bname}}</div>
+		   		    <div class="productprice"><div class="pull-right"><button act="{{$vv.Bid}}" class="btn btn-danger btn-sm addbfav" role="button">收藏</button></div><div class="pricetext">{{$vv.NOrate}}</div></div>
+		   		</div>
+		   		{{end}}
+		   		{{if .tin.SHasmoney}}
+		   		<div class="col-md-4 column productbox">
+	   		       <img src="/static/img/rmb.jpg" class="img-responsive" style="height:110px;weight:80px">
+	   		       <div class="producttitle">人民币{{.tin.SMoney}}元</div>
+		   		   
+		   		</div>
+		   		{{end}}	
+		   </div>
+		</div>
+		<div class="col-xs-2 col-md-2" style="padding-top:35px;padding-left:20px"><img src="/static/img/arrow.png" ></img></div>
+		<div class="col-xs-5 col-md-5 right_content">
+			<div class="row">
+			{{range $kk, $vv := .tin.Wants}}
+			  <div class="col-md-3 column productbox">
+			      <img src="{{$vv.Bimg}}" class="img-responsive" style="height:110px;weight:80px">
+			      <div class="producttitle">{{$vv.Bname}}</div>
+			     
+			  </div>
+			{{end}}
+			{{if .tin.Hasanyoffer}}
+			  <div class="col-md-3 column productbox">
+			      <img src="/static/img/offer.png" class="img-responsive" style="height:110px;weight:80px">
+			      <div class="producttitle">接受任意报价</div>
+			     
+			  </div>
+			 {{end}}
+			 {{if .tin.WHasmoney}}
+			  <div class="col-md-3 column productbox">
+			      <img src="/static/img/rmb.jpg" class="img-responsive" style="height:110px;weight:80px">
+			      <div class="producttitle">人民币{{.tin.WMoney}}元</div>
+			  </div>
+			 {{end}}
+		 	</div>
+		</div>
+    <hr>
+    <div class="col-xs-12 col-md-12 well">{{.tin.Remark}}</div>
+	</div>
+</div>
+
+<div class="row" style="padding-left:10px">
+    <ul class="timeline">
+        <li>
+          <div class="timeline-panel">
+            <div class="timeline-heading">
+            </div>
+            <div class="timeline-body">
+              <div class="row">
+                <div class="col-md-4">
+                  <textarea class="form-control" rows="2" id="remark" placeholder="这里输入附加信息"></textarea>
+                </div>
+                <div id="offferarea" class="col-md-8 well row">
+                </div>
+              </div>
+              <div >
+              <button class="btn btn-primary" id="postoffer">报价</button>&nbsp<button class="btn btn-primary" id="additemoffer">添加物品</button></div>
+              <div id="offcon" class="row" style="display:none;">
+                    <div class="col-md-2 column productbox" id="rmdiv">
+                             <img src="/static/img/rmb.jpg" class="img-responsive" style="height:100px;weight:70px">
+                             <div class="productprice">人民币(元)<input type="text" class="form-control" id="rmoney" value="0"></div>
+                           <div class="producttitle"><button class="btn btn-info btn-sm" id="btnrm">添加</button></div>
+                      </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        {{range $k,$v := .oflist}}
+        <li>
+          <div class="timeline-badge"><i class="glyphicon glyphicon-check"></i></div>
+          <div class="timeline-panel">
+            <div class="timeline-heading">
+              <h4 class="timeline-title"><span class="glyphicon glyphicon-envelope" title="私信Ta"></span>&nbsp{{$v.Uname}}</h4>
+              <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i>{{$v.CreateTime}}</small></p>
+            </div>
+            <div class="timeline-body">
+             <div class="row">
+               <div class="col-md-4"><p>{{$v.Msg}}</p></div>
+               <div class="col-md-8 well row">
+               {{range $kk,$vv := $v.Offerlist}}
+                  <div class="col-md-3 column productbox">
+                      <img src="{{$vv.Bimg}}" class="img-responsive" style="height:100px;weight:70px">
+                      <div class="producttitle">{{$vv.Bname}}</div>
+                      <div class="productprice"><div class="pull-right"><button act="{{$vv.Bid}}" class="btn btn-danger btn-sm addbfav" role="button">收藏</button></div><div class="pricetext">{{$vv.NOrate}}</div></div>
+                  </div>
+                {{end}}
+                {{if $v.Ohasmoney}}
+                <div class="col-md-3 column productbox">
+                     <img src="/static/img/rmb.jpg" class="img-responsive" style="height:100px;weight:70px">
+                     <div class="producttitle">人民币{{$v.Omoney}}元</div>
+                </div>
+                {{end}} 
+               </div>
+             </div>
+             {{range $kk,$vv := $v.Replylist}}
+             {{if $vv.Showonleft}}
+             <hr>
+             <div class="timeline-heading">
+               <h4 class="timeline-title"><span class="glyphicon glyphicon-envelope" title="私信Ta"></span>{{$vv.Uname}}<small class="text-muted pull-right"><i class="glyphicon glyphicon-time"></i>{{$vv.CreateTime}}</small></h4>
+             </div>
+             <div>{{$vv.Msg}}</div>
+             {{else}}
+              <hr>
+              <div class="timeline-heading">
+                <h4 class="timeline-title"><ff class="pull-right"><span class="glyphicon glyphicon-envelope" title="私信Ta"></span>{{$vv.Uname}}</ff>  <small class="text-muted"><i class="glyphicon glyphicon-time"></i>{{$vv.CreateTime}}</small></h4>
+              </div>
+              <div>{{$vv.Msg}}</div>
+              {{end}}
+             {{end}}
+             {{if $v.Hasaccept}}
+             <hr>
+              <p class="bg-success">该报价已被同意！</p>
+              {{end}}
+            </div>
+          </div>
+        </li>
+        {{end}}
+        
+    </ul>
+</div>
+
+
+<script type="text/javascript">
+Array.prototype.indexOf = function(val) { //prototype 给数组添加属性
+    for (var i = 0; i < this.length; i++) { //this是指向数组，this.length指的数组类元素的数量
+        if (this[i] == val) return i; //数组中元素等于传入的参数，i是下标，如果存在，就将i返回
+    }
+    return -1;  
+};
+Array.prototype.remove = function(val) {   //prototype 给数组添加属性
+    var index = this.indexOf(val);  //调用index()函数获取查找的返回值
+    if (index > -1) {
+        this.splice(index, 1);  //利用splice()函数删除指定元素，splice() 方法用于插入、删除或替换数组的元素
+    }
+};
+var ohasmoney = 0;
+var omoney = 0;
+var offerlist=new Array();
+$("body").on("click",".addtfav",function(){
+	act = $(this).attr("act");
+	if(act != ""){
+		$.ajax({
+		 url:"/addfav/trade",
+		 type:"post",dataType:"json",
+		 timeout:"10000",
+		 data:{
+		   "Tid":act,
+		 },success:function(data){
+		   if(data.existed =="1"){
+		     alert("您已收藏过该交易！");
+		   }else if(data.existed == "0"){
+		      alert("交易收藏成功！"); 
+		    }else{
+		    	window.location = "/login";
+		    }
+		   }
+		 });
+	}
+});
+
+$("body").on("click",".addbfav",function(){
+	act = $(this).attr("act");
+	if(act != ""){
+		$.ajax({
+		 url:"/addfav/book",
+		 type:"post",dataType:"json",
+		 timeout:"10000",
+		 data:{
+		   "Bid":act,
+		 },success:function(data){
+		   if(data.existed =="1"){
+		     alert("您已收藏过该书籍！");
+		   }else if(data.existed == "0"){
+		      alert("书籍收藏成功！"); 
+		    }else{
+		    	window.location = "/login";
+		    }
+		   }
+		 });
+	}
+});
+
+$("body").on("click","#additemoffer",function(){
+  $.get("/login/check_login",null,function (data) {  
+    if(data=="fail"){
+      window.location = "/login";
+    }else{
+        $.ajax({
+         url:"/inventory/read",
+         type:"post",dataType:"json",
+         timeout:"10000",
+         data:{
+           "ccc":"1",
+         },success:function(data){
+            $("#offcon").append(data);
+          }
+         });
+       $("#offcon").toggle();
+    }
+   
+  })
+   
+ 
+});
+
+$("body").on("click","#postoffer",function(){
+   $.get("/login/check_login",null,function (data) {  
+    if(data=="fail"){
+      window.location = "/login";
+    }else{
+      remark = $("#remark").val();
+      tid = $("#tradeid").val();
+      tcid = $("#tcid").val();
+      if(offerlist.length==0&&ohasmoney==0){
+        alert("该报价不完整，不能添加！");
+      }else{
+        offerlists = "[,"+offerlist.join()+",]";
+        $.ajax({
+         url:"/offer/addoffer",
+         type:"post",dataType:"json",
+         timeout:"10000",
+         data:{
+           "Tid":tid,
+           "Offerl":offerlists,
+           "Ohasmoney":ohasmoney,
+           "Omoney":omoney,
+           "Remark":remark,
+           "Tcid":tcid
+         },success:function(data){
+          alert("报价成功！");
+          window.location = "/trade/"+tid;
+         }
+        });
+      }
+    }
+   
+  })
+});
+
+$("body").on("click","#btnrm",function(){
+  mn = $("#rmoney").val();
+  if($.isNumeric(mn)&&mn>0){
+    divlb = "<div class='col-md-3 column productbox' id='listrm'><img src='/static/img/rmb.jpg' class='img-responsive' style='height:110px;weight:80px'><div class='producttitle'>人民币"+mn+"元</div><div class='pull-right'><button class='btn btn-info btn-sm cancelrm' role='button'>撤下</button></div></div></div>"
+    $("#offferarea").append(divlb);
+    $("#rmdiv").hide();
+    ohasmoney = 1;
+    omoney = mn;
+  }else{
+    alert("请输入有效的钱数！");
+  }
+});
+
+$("body").on("click",".cancelrm",function(){
+  $("#listrm").remove();
+  $("#rmdiv").show();
+  ohasmoney = 0;
+  omoney = 0;
+});
+
+$("body").on("click",".ofgood",function(){
+  act = $(this).attr("actname");
+  if(act != ""){
+    $.ajax({
+     url:"/book/addtoleft",
+     type:"post",dataType:"json",
+     timeout:"10000",
+     data:{
+       "Ivid":act
+     },success:function(data){
+      if(offerlist.length<4){
+        divlb = "<div class='col-md-3 column productbox' id='listlbk"+data.Id+"'><img src='"+data.Image+"' class='img-responsive' style='height:110px;weight:80px'><div class='producttitle'>"+data.Title+"</div><div class='productprice'><div class='pull-right'><button actname='"+data.Id+"' class='btn btn-info btn-sm cancell' role='button'>撤下</button></div><div class='pricetext'>"+data.NOrate+"</div></div></div>"
+        $("#offferarea").append(divlb);
+        $("#ofgooddiv"+act).hide();
+        offerlist.push(act);
+      }else{
+        alert("已达最大能添加数量！")
+      }
+     }
+    });
+  }
+});
+
+$("body").on("click",".cancell",function(){
+  act = $(this).attr("actname");
+  $("#listlbk"+act).remove();
+  $("#ofgooddiv"+act).show();
+  offerlist.remove(act);
+});
+</script>

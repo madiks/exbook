@@ -1,0 +1,295 @@
+<style  type="text/css">
+.productbox {
+    background-color:#ffffff;
+	padding:10px;
+	margin-bottom:10px;
+	-webkit-box-shadow: 0 8px 6px -6px  #999;
+	   -moz-box-shadow: 0 8px 6px -6px  #999;
+	        box-shadow: 0 8px 6px -6px #999;
+}
+
+.producttitle {
+    font-weight:bold;
+	padding:5px 0 5px 0;
+}
+
+.productprice {
+	border-top:1px solid #dadada;
+	padding-top:5px;
+}
+
+.pricetext {
+	font-weight:bold;
+	font-size:1.4em;
+}
+
+
+</style>
+
+<h3>添加交换</h3>
+
+<div class="row" style="padding-left:25px;padding-right:25px;">
+	<div class="tradelist row well">
+			<h5><button class="btn btn-primary pull-right" id="posttrade"><span class="glyphicon glyphicon-plus"></span>添加交换</button></h5>
+			<div class="col-xs-5 col-md-5 left_content">
+			   <div class="row" id="leftlist">
+			   		
+			   			
+			   </div>
+			</div>
+			<div class="col-xs-2 col-md-2" style="padding-top:35px;padding-left:20px"><img src="/static/img/arrow.png"></div>
+			<div class="col-xs-5 col-md-5 right_content">
+				<div class="row" id="rightlist">
+				
+				 
+			 	</div>
+			</div>
+	</div>
+	<textarea class="form-control" rows="3" id="remark" placeholder="这里输入交易备注信息"></textarea>
+	<hr>
+	<div class="col-md-6">
+		<div class="well row">
+			{{range $k, $v := .Bks}}
+				<div class="col-md-3 column productbox " id="leftbk{{$v.Id}}" style="border-right:1px solid #dadada;">
+					<div>
+				    <img src="{{$v.Image}}" class="img-responsive" style="height:100px;weight:70px">
+				    <div class="producttitle">{{$v.Title}}</div>
+				    <div class="productprice"><div class="pricetext">{{$v.NOrate}}</div></div>
+				    <div class="producttitle"><button class="btn btn-info btn-sm leftbk" actname="{{$v.Id}}">添加</button></div>
+				    </div>
+				</div>
+			{{end}}
+			<div class="col-md-3 column productbox" id="lmdiv">
+	   		       <img src="/static/img/rmb.jpg" class="img-responsive" style="height:110px;weight:80px">
+	   		       <div class="productprice">人民币(元)<input type="text" class="form-control" id="lmoney" value="0"></div>
+		   		   <div class="producttitle"><button class="btn btn-info btn-sm" id="btnlm">添加</button></div>
+		   	</div>
+		</div>
+	</div>
+	
+	<div class="col-md-6">
+		<div class="row">
+			<div class="form-group col-md-8 main-search">
+				<input class="typeahead form-control" type="text" id="bkisbn" placeholder="输入图书ISBN" >
+			</div>
+			<button class="btn btn-success pull-right btn-search" id="searchbk" type="button"><i class="icon-search"></i> 检索图书</button>
+		</div>
+		<div id="searchres" class="row"></div>
+		<hr>
+		<div class="well row">
+		
+			
+			 {{range $k,$v := .bks}}
+					<div class="col-md-3 column productbox " id="rightbk{{$v.Bid}}" style="border-right:1px solid #dadada;">
+						<div>
+					    <img src="{{$v.Image}}" class="img-responsive" style="height:110px;weight:80px">
+					    <div class="producttitle">{{$v.Title}}</div>
+					    <div class="producttitle"><button  actname="{{$v.Bid}}" class="btn btn-info btn-sm rightbk" role="button">添加</button></div>
+					    </div>
+					</div>
+			   {{end}}
+		  		<div class="col-md-3 column productbox" id="rmdiv">
+		     		       <img src="/static/img/rmb.jpg" class="img-responsive" style="height:110px;weight:80px">
+		     		       <div class="productprice">人民币(元)<input type="text" class="form-control" id="rmoney" value="0"></div>
+		  	   		   <div class="producttitle"><button class="btn btn-info btn-sm" id="btnrm">添加</button></div>
+		  	   	</div>
+
+		  	   	<div class="col-md-3 column productbox" id="anyofr">
+		  	   	    <img src="/static/img/offer.png" class="img-responsive" style="height:110px;weight:80px">
+		  	   	    <div class="producttitle">接受任意报价</div>
+		  	   	   <div class="producttitle"><button class="btn btn-info btn-sm" id="addofr">添加</button></div>
+		  	   	</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+Array.prototype.indexOf = function(val) { //prototype 给数组添加属性
+    for (var i = 0; i < this.length; i++) { //this是指向数组，this.length指的数组类元素的数量
+        if (this[i] == val) return i; //数组中元素等于传入的参数，i是下标，如果存在，就将i返回
+    }
+    return -1;  
+};
+Array.prototype.remove = function(val) {   //prototype 给数组添加属性
+    var index = this.indexOf(val);  //调用index()函数获取查找的返回值
+    if (index > -1) {
+        this.splice(index, 1);  //利用splice()函数删除指定元素，splice() 方法用于插入、删除或替换数组的元素
+    }
+};
+
+var selllist=new Array(); 
+var wantlist=new Array();
+var hasanyoffer = 0;
+var shasmoney = 0;
+var smoney = 0;
+var whasmoney = 0;
+var wmoney = 0;
+$("body").on("click","#searchbk",function(){
+	isbn = $("#bkisbn").val()
+
+	if(isbn != ""){
+		$.ajax({
+		 url:"/book/searchbook",
+		 type:"post",dataType:"json",
+		 timeout:"10000",
+		 data:{
+		   "Isbn":isbn,
+		 },
+		 success:function(data){
+		 	if(data!=null){
+			   divs = "<div class='col-md-3 column productbox' id='rightbk"+data.Id+"' style='border-right:1px solid #dadada;'><div><img src='"+data.Image+"' class='img-responsive' style='height:110px;weight:80px'><div class='producttitle'>"+data.Title+"</div><div class='producttitle'><button  actname='"+data.Id+"' class='btn btn-info btn-sm rightbk' role='button'>添加</button></div></div></div>";
+				$("#searchres").html(divs);
+			}else{
+				alert("未找到图书，请检查ISBN是否输入正确！");
+			}
+		 }
+		});
+	}else{
+		alert("请输入ISBN！");
+	}
+});
+
+$("body").on("click",".leftbk",function(){
+	act = $(this).attr("actname");
+	if(act != ""){
+		$.ajax({
+		 url:"/book/addtoleft",
+		 type:"post",dataType:"json",
+		 timeout:"10000",
+		 data:{
+		   "Ivid":act
+		 },success:function(data){
+		 	if(selllist.length<4){
+			 	divlb = "<div class='col-md-3 column productbox' id='listlbk"+data.Id+"'><img src='"+data.Image+"' class='img-responsive' style='height:110px;weight:80px'><div class='producttitle'>"+data.Title+"</div><div class='productprice'><div class='pull-right'><button actname='"+data.Id+"' class='btn btn-info btn-sm cancell' role='button'>撤下</button></div><div class='pricetext'>"+data.NOrate+"</div></div></div>"
+			 	$("#leftlist").append(divlb);
+			 	$("#leftbk"+act).hide();
+			 	selllist.push(act);
+		 	}else{
+		 		alert("已达最大能添加数量！")
+		 	}
+		 }
+		});
+	}
+});
+
+$("body").on("click",".cancell",function(){
+	act = $(this).attr("actname");
+	$("#listlbk"+act).remove();
+	$("#leftbk"+act).show();
+	selllist.remove(act);
+});
+
+$("body").on("click",".rightbk",function(){
+	act = $(this).attr("actname");
+	if(act != ""){
+		$.ajax({
+		 url:"/book/addtoright",
+		 type:"post",dataType:"json",
+		 timeout:"10000",
+		 data:{
+		   "Bid":act
+		 },success:function(data){
+		 	if(wantlist.length < 4){
+			 	divlb = "<div class='col-md-3 column productbox' id='listrbk"+data.Id+"'><img src='"+data.Image+"' class='img-responsive' style='height:110px;weight:80px'><div class='producttitle'>"+data.Title+"</div><div class='productprice'><div class='pull-right'><button actname='"+data.Id+"' class='btn btn-info btn-sm cancelr' role='button'>撤下</button></div></div></div>"
+			 	$("#rightlist").append(divlb);
+			 	$("#rightbk"+act).hide();
+			 	wantlist.push(act);
+			 }else{
+			 	alert("已达最大能添加数量！")
+			 }
+		 }
+		});
+	}
+});
+
+$("body").on("click",".cancelr",function(){
+	act = $(this).attr("actname");
+	$("#listrbk"+act).remove();
+	$("#rightbk"+act).show();
+	wantlist.remove(act);
+});
+
+$("body").on("click","#btnlm",function(){
+	mn = $("#lmoney").val();
+	if($.isNumeric(mn)&&mn>0){
+		divlb = "<div class='col-md-3 column productbox' id='listlm'><img src='/static/img/rmb.jpg' class='img-responsive' style='height:110px;weight:80px'><div class='producttitle'>人民币"+mn+"元</div><div class='pull-right'><button class='btn btn-info btn-sm cancellm' role='button'>撤下</button></div></div></div>"
+		$("#leftlist").append(divlb);
+		$("#lmdiv").hide();
+		shasmoney = 1;
+		smoney = mn;
+	}else{
+		alert("请输入有效的钱数！");
+	}
+});
+
+$("body").on("click",".cancellm",function(){
+	$("#listlm").remove();
+	$("#lmdiv").show();
+	shasmoney = 0;
+	smoney = 0;
+});
+
+$("body").on("click","#btnrm",function(){
+	mn = $("#rmoney").val();
+	if($.isNumeric(mn)&&mn>0){
+		divlb = "<div class='col-md-3 column productbox' id='listrm'><img src='/static/img/rmb.jpg' class='img-responsive' style='height:110px;weight:80px'><div class='producttitle'>人民币"+mn+"元</div><div class='pull-right'><button class='btn btn-info btn-sm cancelrm' role='button'>撤下</button></div></div></div>"
+		$("#rightlist").append(divlb);
+		$("#rmdiv").hide();
+		whasmoney = 1;
+		wmoney = mn;
+	}else{
+		alert("请输入有效的钱数！");
+	}
+});
+
+$("body").on("click",".cancelrm",function(){
+	$("#listrm").remove();
+	$("#rmdiv").show();
+	whasmoney = 0;
+	wmoney = 0;
+});
+
+$("body").on("click","#addofr",function(){
+	
+	divlb = "<div class='col-md-3 column productbox' id='listofr'><img src='/static/img/offer.png' class='img-responsive' style='height:110px;weight:80px'><div class='producttitle'>接受任意报价</div><div class='pull-right'><button class='btn btn-info btn-sm cancelofr' role='button'>撤下</button></div></div></div>"
+	$("#rightlist").append(divlb);
+	$("#anyofr").hide();
+	hasanyoffer = 1;
+});
+
+$("body").on("click",".cancelofr",function(){
+	$("#listofr").remove();
+	$("#anyofr").show();
+	hasanyoffer = 0;
+});
+
+$("body").on("click","#posttrade",function(){
+	remark = $("#remark").val();
+	if(selllist.length==0&&shasmoney==0){
+		alert("该交换不完整，不能添加！");
+	}else if(wantlist.length==0&&whasmoney==0&&hasanyoffer==0){
+		alert("该交换不完整，不能添加！");
+	}else{
+		selllists = "[,"+selllist.join()+",]";
+		wantlists = "[,"+wantlist.join()+",]";
+		$.ajax({
+		 url:"/trade/addtrade",
+		 type:"post",dataType:"json",
+		 timeout:"10000",
+		 data:{
+		   "Selll":selllists,
+		   "Wantl":wantlists,
+		   "Hasanyoffer":hasanyoffer,
+		   "Shasmoney":shasmoney,
+		   "Smoney":smoney,
+		   "Whasmoney":whasmoney,
+		   "Wmoney":wmoney,
+		   "Remark":remark
+		 },success:function(data){
+		  alert("添加交换成功！");
+		  window.location = "/mytrade";
+		 }
+		});
+	}
+});
+</script>

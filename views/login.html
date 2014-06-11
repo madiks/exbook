@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="shortcut icon" href="{{.Favicon}}" />
+		<meta name="description" content="Go online project API documentation, docuemnts, videos" />
+		<meta name="keywords" content="Go, golang, API documentation, video, document">
+
+		 
+		<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+		<link href="/static/css/todc-bootstrap.min.css" rel="stylesheet" />
+		<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+		<link href="/static/css/link.css" rel="stylesheet" />
+		<link href="/static/css/gwserver.css" rel="stylesheet" />
+
+		<script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+		<script src="/static/js/bootstrap.min.js"></script>
+		<title>{{.PageTitle}} - {{.SiteTitle}}</title>
+		<style  type="text/css">
+		.form-signin
+		{
+		    max-width: 330px;
+		    padding: 15px;
+		    margin: 0 auto;
+		}
+		.form-signin .form-signin-heading, .form-signin .checkbox
+		{
+		    margin-bottom: 10px;
+		}
+		.form-signin .checkbox
+		{
+		    font-weight: normal;
+		}
+		.form-signin .form-control
+		{
+		    position: relative;
+		    font-size: 16px;
+		    height: auto;
+		    padding: 10px;
+		    -webkit-box-sizing: border-box;
+		    -moz-box-sizing: border-box;
+		    box-sizing: border-box;
+		}
+		.form-signin .form-control:focus
+		{
+		    z-index: 2;
+		}
+		.form-signin input[type="text"]
+		{
+		    margin-bottom: -1px;
+		    border-bottom-left-radius: 0;
+		    border-bottom-right-radius: 0;
+		}
+		.form-signin input[type="password"]
+		{
+		    margin-bottom: 10px;
+		    border-top-left-radius: 0;
+		    border-top-right-radius: 0;
+		}
+		.account-wall
+		{
+		    margin-top: 20px;
+		    padding: 40px 0px 20px 0px;
+		    background-color: #f7f7f7;
+		    -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+		    -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+		    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+		}
+		.login-title
+		{
+		    color: #555;
+		    font-size: 30px;
+		    font-weight: 400;
+		    display: block;
+		}
+		.profile-img
+		{
+		    width: 96px;
+		    height: 96px;
+		    margin: 0 auto 10px;
+		    display: block;
+		    -moz-border-radius: 50%;
+		    -webkit-border-radius: 50%;
+		    border-radius: 50%;
+		}
+		.need-help
+		{
+		    margin-top: 10px;
+		}
+		.new-account
+		{
+		    display: block;
+		    margin-top: 10px;
+		}
+		</style>
+    </head>
+<body id="body">
+<noscript>Please enable JavaScript in your browser!</noscript>
+<div id="navbar_frame" class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container" style="padding-left: 30px;">
+        <a class="navbar-brand" href="/">
+            同城换书
+            <sub class="version">长春</sub>
+        </a>
+        <ul class="nav navbar-nav">
+            <li class="{{if .IsIndex}}active{{end}}">
+                <a href="/">交换</a>
+            </li>
+            
+           <!--  <li class="{{if .IsActivity}}active{{end}}">
+                <a href="/activity">同城活动</a>
+            </li> -->
+
+        </ul>
+
+
+        <ul class="nav navbar-nav pull-right">
+			<li>
+				<a href="/register">注册</a>
+			</li>
+			<li>
+				<a href="/login">登录</a>
+			</li>
+		</ul>
+    </div>
+</div>
+<div class="container">
+	<div class="row" style="margin-bottom:50px">
+	        <div class="col-sm-6 col-md-4 col-md-offset-4">
+	            <h1 class="text-center login-title">会员登录</h1>
+	            <div class="account-wall">
+	                <img class="profile-img" src="static/img/user.png"
+	                    alt="">
+	               <form class="form-signin" method="post" action="/login">              
+	               <!-- <form class="form-signin" action="<?php echo base_url(); ?>login/go" method="post"> -->
+	                <input name="uname" id="username" type="text" value="" class="form-control" placeholder="用户名" required autofocus>
+	                <input name="pass" type="password" class="form-control" placeholder="密码" required>
+	                <label class="checkbox pull-left">
+	                    <input name="remember" type="checkbox" value="yes">
+	                    记住我
+	                </label>
+					<button class="btn btn-lg btn-primary btn-block" type="submit">
+	                    登录
+	                </button>
+
+	               {{if .errmsg}}
+	               <div class="alert alert-danger" style="margin-top:5px">
+	               <button type="button" class="close" data-dismiss="alert">&times;</button>
+	               {{.errmsg}}
+	               </div>
+	               {{end}}		
+	 
+	                <!--</form>-->
+	                </form>
+	                
+	            </div>
+	            <a href="/register" class="text-center new-account">注册新用户</a>
+	        </div>
+	    </div>         
+	
+</div>   
+<footer id="_bottom">
+	<div class="container" style="padding-left: 0px; padding-top: 10px; padding-bottom: 10px;">
+		<div class="col-xs-8 col-md-8" style="width: 450px;">
+			
+
+			<p><strong>Copyright © 2014-2015 同城换书网</strong></p>
+			
+			<p>Website built by <i class="icon-user"></i> <a target="_blank" href="{{.AdminLink}}">@{{.AdminName}}</a>. Powered by <a target="_blank" href="http://gowalker.org/github.com/astaxie/beego"><i class="icon-bold"></i>eego</a>.</p>
+			<p>Based on <a target="_blank" href="http://getbootstrap.com/">Bootstrap</a>. Icons from <a target="_blank" href="http://fortawesome.github.io/Font-Awesome/">Font Awesome</a>.</p>
+			<p>Send us <i class="icon-envelope"></i> <a href="mailto:{{.AdminEmail}}">Feedback</a> or submit <i class="icon-tasks"></i> <a target="_blank" href="https://github.com/Unknwon/gowalker/issues">Website Issues</a>. </p>
+			
+
+		</div>
+		
+
+		<div class="col-xs-6 col-md-6" style="margin-top: 25px;">
+			
+		</div>
+		<link href="/static/css/typeahead.js-bootstrap.css" rel="stylesheet" />
+	</div>
+</footer>
+<script type="text/javascript">
+jQuery.cookie = function(name, value, options) {
+    if (typeof value != 'undefined') { // name and value given, set cookie
+        options = options || {};
+        if (value === null) {
+            value = '';
+            options.expires = -1;
+        }
+        var expires = '';
+        if (options.expires && (typeof options.expires == 'number' || options.expires.toUTCString)) {
+            var date;
+            if (typeof options.expires == 'number') {
+                date = new Date();
+                date.setTime(date.getTime() + (options.expires * 24 * 60 * 60 * 1000));
+            } else {
+                date = options.expires;
+            }
+            expires = '; expires=' + date.toUTCString(); // use expires attribute, max-age is not supported by IE
+        }
+        var path = options.path ? '; path=' + options.path : '';
+        var domain = options.domain ? '; domain=' + options.domain : '';
+        var secure = options.secure ? '; secure' : '';
+        document.cookie = [name, '=', encodeURIComponent(value), expires, path, domain, secure].join('');
+    } else { // only name given, get cookie
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+};
+$(document).ready(function(){
+    uname =  $.cookie('uname');
+    if(uname != null){
+    	$("#username").val(uname);
+    }
+});
+</script>
+</body>
+</html>
+
+
+

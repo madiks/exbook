@@ -1,0 +1,128 @@
+<style  type="text/css">
+.productbox {
+    background-color:#ffffff;
+	padding:10px;
+	margin-bottom:10px;
+	-webkit-box-shadow: 0 8px 6px -6px  #999;
+	   -moz-box-shadow: 0 8px 6px -6px  #999;
+	        box-shadow: 0 8px 6px -6px #999;
+}
+
+.producttitle {
+    font-weight:bold;
+	padding:5px 0 5px 0;
+}
+
+.productprice {
+	border-top:1px solid #dadada;
+	padding-top:5px;
+}
+
+.pricetext {
+	font-weight:bold;
+	font-size:1.4em;
+}
+
+
+</style>
+
+<h3>我的报价Offer</h3>
+
+<div class="row" style="padding-left:25px;padding-right:25px;">
+{{if .isempty}}
+<div class="alert alert-warning" style="margin-bottom:100px;margin-top:10px;"><h4>您还没有任何报价.</h4></div>
+{{end}}
+{{range $k, $v := .trades}}
+	<div class="tradelist row well" title="{{$v.Remark}}">
+			<h5>{{if $v.Shownewrp}}({{$v.Newrpnum}}){{end}}<a href="/myoffer/{{$v.Id}}"><span class="glyphicon glyphicon-user">{{$v.Uname}}</span></a> 想要交换:({{$v.UpdateTime}}) <button class="pull-right  btn btn-danger deletealloffer" data-toggle="modal" data-target="#delete" data-placement="top" rel="tooltip" actname="{{$v.Id}}"><span class="glyphicon glyphicon-bookmark"></span>取消报价</button></h5>
+			<div class="col-xs-5 col-md-5 left_content">
+			   <div class="row">
+   			   		{{range $kk, $vv := $v.Sells}}
+   			   		<div class="col-md-3 column productbox">
+   			   		    <img src="{{$vv.Bimg}}" class="img-responsive" style="height:110px;weight:80px">
+   			   		    <div class="producttitle">{{$vv.Bname}}</div>
+   			   		    <div class="productprice"><div class="pricetext">{{$vv.NOrate}}</div></div>
+   			   		</div>
+   			   		{{end}}
+   			   		{{if $v.SHasmoney}}
+   			   		<div class="col-md-4 column productbox">
+   		   		       <img src="/static/img/rmb.jpg" class="img-responsive" style="height:110px;weight:80px">
+   		   		       <div class="producttitle">人民币{{$v.SMoney}}元</div>
+   			   		   
+   			   		</div>
+   			   		{{end}}	
+   			
+			   </div>
+			</div>
+			<div class="col-xs-2 col-md-2" style="padding-top:35px;padding-left:20px"><img src="/static/img/arrow.png"></div>
+			<div class="col-xs-5 col-md-5 right_content">
+				<div class="row">
+					{{range $kk, $vv := $v.Wants}}
+					  <div class="col-md-3 column productbox">
+					      <img src="{{$vv.Bimg}}" class="img-responsive" style="height:110px;weight:80px">
+					      <div class="producttitle">{{$vv.Bname}}</div>
+					     
+					  </div>
+					{{end}}
+					{{if $v.Hasanyoffer}}
+					  <div class="col-md-3 column productbox">
+					      <img src="/static/img/offer.png" class="img-responsive" style="height:110px;weight:80px">
+					      <div class="producttitle">接受任意报价</div>
+					     
+					  </div>
+					 {{end}}
+					 {{if $v.WHasmoney}}
+					  <div class="col-md-3 column productbox">
+					      <img src="/static/img/rmb.jpg" class="img-responsive" style="height:110px;weight:80px">
+					      <div class="producttitle">人民币{{$v.WMoney}}元</div>
+					  </div>
+					 {{end}}
+				 </div>
+			</div>
+		</div>
+{{end}}
+</div>
+
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+    <div class="modal-dialog">
+  <div class="modal-content">
+        <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h4 class="modal-title custom_align" id="Heading">取消报价</h4>
+    </div>
+        <div class="modal-body">
+     
+     <div class="alert alert-warning"><span class="glyphicon glyphicon-warning-sign"></span> 确定取消关于该交换的所有报价?</div>
+     
+    </div>
+      <div class="modal-footer ">
+      <button type="button" class="btn btn-primary" id="suredel" actname="" ><i class="fa fa-check"></i></span>确定</button>
+      <button type="button" class="btn btn-warning" id="canceldel"><i class="fa fa-times"></i>取消</button>
+    </div>
+      </div>
+  <!-- /.modal-content --> 
+</div>
+    <!-- /.modal-dialog --> 
+  </div>
+
+<script type="text/javascript">
+ $("body").on("click",".deletealloffer",function(){
+          act = $(this).attr("actname");
+          $("#suredel").attr("actname",act);
+        });
+
+$("body").on("click","#suredel",function(){
+  act = $(this).attr("actname");
+   url = "/offer/deletealloffer/"+act;
+  //alert(url);
+  if(url!=""){
+      window.location = url;
+  }
+});
+
+ $("body").on("click","#canceldel",function(){
+          $('#delete').modal('hide')
+        });
+
+</script>
+

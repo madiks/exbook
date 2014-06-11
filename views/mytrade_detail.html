@@ -1,0 +1,469 @@
+<style  type="text/css">
+.productbox {
+    background-color:#ffffff;
+	padding:10px;
+	margin-bottom:10px;
+	-webkit-box-shadow: 0 8px 6px -6px  #999;
+	   -moz-box-shadow: 0 8px 6px -6px  #999;
+	        box-shadow: 0 8px 6px -6px #999;
+}
+
+.producttitle {
+    font-weight:bold;
+	padding:5px 0 5px 0;
+}
+
+.productprice {
+	border-top:1px solid #dadada;
+	padding-top:5px;
+}
+
+.pricetext {
+	font-weight:bold;
+	font-size:1.4em;
+}
+
+.timeline {
+  list-style: none;
+  padding: 20px 0 20px;
+  position: relative;
+}
+.timeline:before {
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  content: " ";
+  width: 3px;
+  background-color: #eeeeee;
+  right: 25px;
+  margin-left: -1.5px;
+}
+.timeline > li {
+  margin-bottom: 20px;
+  position: relative;
+}
+.timeline > li:before,
+.timeline > li:after {
+  content: " ";
+  display: table;
+}
+.timeline > li:after {
+  clear: both;
+}
+.timeline > li:before,
+.timeline > li:after {
+  content: " ";
+  display: table;
+}
+.timeline > li:after {
+  clear: both;
+}
+.timeline > li > .timeline-panel {
+  width: calc( 100% - 75px );
+  float: left;
+  border: 1px solid #d4d4d4;
+  border-radius: 2px;
+  padding: 20px;
+  position: relative;
+  -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
+}
+.timeline > li > .timeline-panel:before {
+  position: absolute;
+  top: 26px;
+  right: -15px;
+  display: inline-block;
+  border-top: 15px solid transparent;
+  border-left: 15px solid #ccc;
+  border-right: 0 solid #ccc;
+  border-bottom: 15px solid transparent;
+  content: " ";
+}
+.timeline > li > .timeline-panel:after {
+  position: absolute;
+  top: 27px;
+  right: -14px;
+  display: inline-block;
+  border-top: 14px solid transparent;
+  border-left: 14px solid #fff;
+  border-right: 0 solid #fff;
+  border-bottom: 14px solid transparent;
+  content: " ";
+}
+.timeline > li > .timeline-badge {
+  color: #fff;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  font-size: 1.4em;
+  text-align: center;
+  position: absolute;
+  top: 16px;
+  right: 0px;
+  margin-left: -25px;
+  background-color: #999999;
+  z-index: 100;
+  border-top-right-radius: 50%;
+  border-top-left-radius: 50%;
+  border-bottom-right-radius: 50%;
+  border-bottom-left-radius: 50%;
+}
+.timeline > li.timeline-inverted > .timeline-panel {
+  float: right;
+}
+.timeline > li.timeline-inverted > .timeline-panel:before {
+  border-left-width: 0;
+  border-right-width: 15px;
+  left: -15px;
+  right: auto;
+}
+.timeline > li.timeline-inverted > .timeline-panel:after {
+  border-left-width: 0;
+  border-right-width: 14px;
+  left: -14px;
+  right: auto;
+}
+.timeline-badge.primary {
+  background-color: #2e6da4 !important;
+}
+.timeline-badge.success {
+  background-color: #3f903f !important;
+}
+.timeline-badge.warning {
+  background-color: #f0ad4e !important;
+}
+.timeline-badge.danger {
+  background-color: #d9534f !important;
+}
+.timeline-badge.info {
+  background-color: #5bc0de !important;
+}
+.timeline-title {
+  margin-top: 0;
+  color: inherit;
+}
+.timeline-body > p,
+.timeline-body > ul {
+  margin-bottom: 0;
+}
+.timeline-body > p + p {
+  margin-top: 5px;
+}
+
+</style>
+
+<div class="row" style="padding-left:25px;padding-right:25px;">
+	<div class="tradelist row well"  title="{{.tin.Remark}}">
+  <input type="hidden" value="{{.tin.Id}}" id="tradeid">
+		<h5><a href="/trade/{{.tin.Id}}"><span class="glyphicon glyphicon-user">{{.tin.Uname}}</span></a> 想要交换:({{.tin.UpdateTime}}) </h5>
+		<div class="col-xs-5 col-md-5 left_content">
+		   <div class="row">
+		   		{{range $kk, $vv := .tin.Sells}}
+		   		<div class="col-md-3 column productbox">
+		   		    <img src="{{$vv.Bimg}}" class="img-responsive" style="height:110px;weight:80px">
+		   		    <div class="producttitle">{{$vv.Bname}}</div>
+		   		    <div class="productprice"><div class="pricetext">{{$vv.NOrate}}</div></div>
+		   		</div>
+		   		{{end}}
+		   		{{if .tin.SHasmoney}}
+		   		<div class="col-md-4 column productbox">
+	   		       <img src="/static/img/rmb.jpg" class="img-responsive" style="height:110px;weight:80px">
+	   		       <div class="producttitle">人民币{{.tin.SMoney}}元</div>
+		   		   
+		   		</div>
+		   		{{end}}	
+		   </div>
+		</div>
+		<div class="col-xs-2 col-md-2" style="padding-top:35px;padding-left:20px"><img src="/static/img/arrow.png" ></img></div>
+		<div class="col-xs-5 col-md-5 right_content">
+			<div class="row">
+			{{range $kk, $vv := .tin.Wants}}
+			  <div class="col-md-3 column productbox">
+			      <img src="{{$vv.Bimg}}" class="img-responsive" style="height:110px;weight:80px">
+			      <div class="producttitle">{{$vv.Bname}}</div>
+			     
+			  </div>
+			{{end}}
+			{{if .tin.Hasanyoffer}}
+			  <div class="col-md-3 column productbox">
+			      <img src="/static/img/offer.png" class="img-responsive" style="height:110px;weight:80px">
+			      <div class="producttitle">接受任意报价</div>
+			     
+			  </div>
+			 {{end}}
+			 {{if .tin.WHasmoney}}
+			  <div class="col-md-3 column productbox">
+			      <img src="/static/img/rmb.jpg" class="img-responsive" style="height:110px;weight:80px">
+			      <div class="producttitle">人民币{{.tin.WMoney}}元</div>
+			  </div>
+			 {{end}}
+		 	</div>
+		</div>
+    <div class="col-xs-12 col-md-12 well">{{.tin.Remark}}</div>
+	</div>
+</div>
+
+<div class="row" style="padding-left:10px">
+    <ul class="timeline">
+       {{range $k,$v := .oflist}}
+       <li>
+       <input type="hidden" value="{{$v.Uid}}" id="toid{{$v.Id}}">
+         <div class="timeline-badge"><i class="glyphicon glyphicon-check"></i></div>
+         <div class="timeline-panel">
+           <div class="timeline-heading">
+             <h4 class="timeline-title"><span class="glyphicon glyphicon-envelope" title="私信Ta"></span>&nbsp{{$v.Uname}}</h4>
+             <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i>{{$v.CreateTime}}</small></p>
+           </div>
+           <div class="timeline-body">
+            <div class="row">
+              <div class="col-md-4"><p>{{$v.Msg}}</p></div>
+              <div class="col-md-8 well row">
+              {{range $kk,$vv := $v.Offerlist}}
+                 <div class="col-md-3 column productbox">
+                     <img src="{{$vv.Bimg}}" class="img-responsive" style="height:100px;weight:70px">
+                     <div class="producttitle">{{$vv.Bname}}</div>
+                     <div class="productprice"><div class="pull-right"><button act="{{$vv.Bid}}" class="btn btn-danger btn-sm addbfav" role="button">收藏</button></div><div class="pricetext">{{$vv.NOrate}}</div></div>
+                 </div>
+               {{end}}
+               {{if $v.Ohasmoney}}
+               <div class="col-md-3 column productbox">
+                    <img src="/static/img/rmb.jpg" class="img-responsive" style="height:100px;weight:70px">
+                    <div class="producttitle">人民币{{$v.Omoney}}元</div>
+               </div>
+               {{end}} 
+              </div>
+            </div>
+           
+            {{range $kk,$vv := $v.Replylist}}
+            {{if $vv.Showonleft}}
+           
+            <hr>
+            <div class="timeline-heading">
+              <h4 class="timeline-title"><span class="glyphicon glyphicon-envelope" title="私信Ta"></span>{{$vv.Uname}}<small class="text-muted pull-right"><i class="glyphicon glyphicon-time"></i>{{$vv.CreateTime}}</small></h4>
+            </div>
+            <div>{{$vv.Msg}}</div>
+            {{else}}
+             <hr>
+             <div class="timeline-heading">
+               <h4 class="timeline-title"><ff class="pull-right"><span class="glyphicon glyphicon-envelope" title="私信Ta"></span>{{$vv.Uname}}</ff> <small class="text-muted"><i class="glyphicon glyphicon-time"></i>{{$vv.CreateTime}}</small>&nbsp<button class="btn btn-danger deletereply" data-toggle="modal" data-target="#delreply" data-placement="top" rel="tooltip" actname="{{$vv.Rfid}}">删除回复</button></h4>
+             </div>
+             <div>{{$vv.Msg}}</div>
+             {{end}}
+            {{end}}
+            <hr>
+            {{if $v.Hasaccept}}
+            <p class="bg-success">您已同意该报价！</p>
+            <button style="margin-top:5px;" class="btn btn-primary canceloffer" data-toggle="modal" data-target="#cancel" data-placement="top" rel="tooltip" actname="{{$v.Id}}">取消同意</button>
+            {{else}}
+            <div>
+            <button class="btn btn-primary replyoffer" actname="{{$v.Id}}">回复</button>&nbsp<button class="btn btn-primary acceptoffer" data-toggle="modal" data-target="#accept" data-placement="top" rel="tooltip" actname="{{$v.Id}}">接受接受</button>&nbsp<button class="btn btn-danger refuseoffer" data-toggle="modal" data-target="#delete" data-placement="top" rel="tooltip" actname="{{$v.Id}}">拒绝报价</button>
+            </div>
+            <div id="replyarea{{$v.Id}}" style="display:none;margin-top:5px;">
+              <textarea class="form-control" rows="2" id="remark{{$v.Id}}" placeholder="这里输入附加信息"></textarea>
+              <button class="btn btn-primary postreplyoffer" actname="{{$v.Id}}" style="margin-top:5px;">回复</button>
+            </div>
+            {{end}}
+           </div>
+         </div>
+       </li>
+       {{end}}
+       
+    </ul>
+</div>
+
+<div class="modal fade" id="accept" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+            <div class="modal-dialog">
+          <div class="modal-content">
+                <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              <h4 class="modal-title custom_align" id="Heading">接受报价</h4>
+            </div>
+                <div class="modal-body">
+             
+             <div class="alert alert-warning"><span class="glyphicon glyphicon-warning-sign"></span> 确定接受该报价?</div>
+             
+            </div>
+              <div class="modal-footer ">
+              <button type="button" class="btn btn-primary" id="sureacp" actname="" ><i class="fa fa-check"></i></span>确定</button>
+              <button type="button" class="btn btn-warning" id="cancelacp"><i class="fa fa-times"></i>取消</button>
+            </div>
+              </div>
+          <!-- /.modal-content --> 
+        </div>
+            <!-- /.modal-dialog --> 
+          </div>
+
+
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+    <div class="modal-dialog">
+  <div class="modal-content">
+        <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h4 class="modal-title custom_align" id="Heading">拒绝报价</h4>
+    </div>
+        <div class="modal-body">
+     
+     <div class="alert alert-warning"><span class="glyphicon glyphicon-warning-sign"></span> 确定拒绝该报价?</div>
+     
+    </div>
+      <div class="modal-footer ">
+      <button type="button" class="btn btn-primary" id="suredel" actname="" ><i class="fa fa-check"></i></span>确定</button>
+      <button type="button" class="btn btn-warning" id="canceldel"><i class="fa fa-times"></i>取消</button>
+    </div>
+      </div>
+  <!-- /.modal-content --> 
+</div>
+    <!-- /.modal-dialog --> 
+  </div>
+
+  <div class="modal fade" id="cancel" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+      <div class="modal-dialog">
+    <div class="modal-content">
+          <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title custom_align" id="Heading">取消同意</h4>
+      </div>
+          <div class="modal-body">
+       
+       <div class="alert alert-warning"><span class="glyphicon glyphicon-warning-sign"></span> 确定取消同意该报价?</div>
+       
+      </div>
+        <div class="modal-footer ">
+        <button type="button" class="btn btn-primary" id="surecan" actname="" ><i class="fa fa-check"></i></span>确定</button>
+        <button type="button" class="btn btn-warning" id="cancelcan"><i class="fa fa-times"></i>取消</button>
+      </div>
+        </div>
+    <!-- /.modal-content --> 
+  </div>
+      <!-- /.modal-dialog --> 
+    </div>
+
+    <div class="modal fade" id="delreply" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+        <div class="modal-dialog">
+      <div class="modal-content">
+            <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="modal-title custom_align" id="Heading">删除回复</h4>
+        </div>
+            <div class="modal-body">
+         
+         <div class="alert alert-warning"><span class="glyphicon glyphicon-warning-sign"></span> 确认删除该回复?</div>
+         
+        </div>
+          <div class="modal-footer ">
+          <button type="button" class="btn btn-primary" id="suredelpost" actname="" ><i class="fa fa-check"></i></span>确定</button>
+          <button type="button" class="btn btn-warning" id="canceldelpost"><i class="fa fa-times"></i>取消</button>
+        </div>
+          </div>
+      <!-- /.modal-content --> 
+    </div>
+        <!-- /.modal-dialog --> 
+      </div>
+
+<script type="text/javascript">
+$("body").on("click",".replyoffer",function(){
+  act = $(this).attr("actname");
+ $("#replyarea"+act).toggle();
+});
+
+ $("body").on("click",".refuseoffer",function(){
+          act = $(this).attr("actname");
+          $("#suredel").attr("actname",act);
+        });
+
+$("body").on("click","#suredel",function(){
+  act = $(this).attr("actname");
+  tid = $("#tradeid").val();
+   url = "/offer/refuseoffer/"+tid+"/"+act;
+  //alert(url);
+  if(url!=""){
+      window.location = url;
+  }
+});
+
+ $("body").on("click","#canceldel",function(){
+          $('#delete').modal('hide')
+        });
+
+  $("body").on("click",".acceptoffer",function(){
+           act = $(this).attr("actname");
+           $("#sureacp").attr("actname",act);
+         });
+
+ $("body").on("click","#sureacp",function(){
+   act = $(this).attr("actname");
+   tid = $("#tradeid").val();
+    url = "/offer/acceptoffer/"+tid+"/"+act;
+   //alert(url);
+   if(url!=""){
+       window.location = url;
+   }
+ });
+
+  $("body").on("click","#cancelacp",function(){
+           $('#accept').modal('hide')
+         });
+
+   $("body").on("click",".canceloffer",function(){
+            act = $(this).attr("actname");
+            $("#surecan").attr("actname",act);
+          });
+
+  $("body").on("click","#surecan",function(){
+    act = $(this).attr("actname");
+    tid = $("#tradeid").val();
+     url = "/offer/canceloffer/"+tid+"/"+act;
+    //alert(url);
+    if(url!=""){
+        window.location = url;
+    }
+  });
+
+   $("body").on("click","#cancelcan",function(){
+            $('#accept').modal('hide')
+          });
+
+   $("body").on("click",".postreplyoffer",function(){
+     act = $(this).attr("actname");
+    tid = $("#tradeid").val();
+     msg = $("#remark"+act).val();
+     toid = $("#toid"+act).val();
+     if(msg==""){
+        alert("回复内容不能为空！")
+     }else{
+        $.ajax({
+         url:"/offer/postreply",
+         type:"post",dataType:"json",
+         timeout:"10000",
+         data:{
+           "Oid":act,
+           "Tid":tid,
+           "Toid":toid,
+           "Msg":msg
+         },success:function(data){
+          alert("回复成功！");
+          window.location = "/mytrade/"+tid;
+         }
+        });
+     }
+   });
+
+    $("body").on("click",".deletereply",function(){
+             act = $(this).attr("actname");
+             $("#suredelpost").attr("actname",act);
+           });
+
+   $("body").on("click","#suredelpost",function(){
+     act = $(this).attr("actname");
+     tid = $("#tradeid").val();
+      url = "/offer/delreply/"+tid+"/"+act;
+     //alert(url);
+     if(url!=""){
+         window.location = url;
+     }
+   });
+
+    $("body").on("click","#canceldelpost",function(){
+             $('#delreply').modal('hide')
+           });
+</script>

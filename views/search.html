@@ -1,0 +1,255 @@
+<style  type="text/css">
+.productbox {
+    background-color:#ffffff;
+	padding:10px;
+	margin-bottom:10px;
+	-webkit-box-shadow: 0 8px 6px -6px  #999;
+	   -moz-box-shadow: 0 8px 6px -6px  #999;
+	        box-shadow: 0 8px 6px -6px #999;
+}
+
+.producttitle {
+    font-weight:bold;
+	padding:5px 0 5px 0;
+}
+
+.productprice {
+	border-top:1px solid #dadada;
+	padding-top:5px;
+}
+
+.pricetext {
+	font-weight:bold;
+	font-size:1.4em;
+}
+
+
+</style>
+
+<h3>搜索</h3>
+
+<div class="row" style="padding-left:25px;padding-right:25px;">
+	<div class="tradelist row well">
+			<h5><form method="get" action="/trade/search"><input type="hidden" id="llist" name="left"/><input type="hidden" id="rlist" name="right" />
+			<button class="btn btn-primary pull-right" type="submit" onclick="return check()"><span class="glyphicon glyphicon-search"></span>搜索</button></form></h5>
+			<div class="col-xs-5 col-md-5 left_content">
+			   <div class="row" id="leftlist">
+			   		
+			   			
+			   </div>
+			</div>
+			<div class="col-xs-2 col-md-2" style="padding-top:35px;padding-left:20px"><img src="/static/img/arrow.png"></div>
+			<div class="col-xs-5 col-md-5 right_content">
+				<div class="row" id="rightlist">
+				
+				 
+			 	</div>
+			</div>
+	</div>
+	<hr>
+	<div class="col-md-6">
+		<div class="row">
+			<div class="form-group col-md-8 main-search">
+				<input class="typeahead form-control" type="text" id="bkisbnl" placeholder="输入图书ISBN" >
+			</div>
+			<button class="btn btn-success pull-right btn-search" id="searchbkl" type="button"><i class="icon-search"></i> 检索图书</button>
+		</div>
+		<div id="searchresl" class="row"></div>
+		<hr>
+		<div class="well row">
+			{{range $k, $v := .Bks}}
+				<div class="col-md-3 column productbox " id="leftbk{{$v.Id}}" style="border-right:1px solid #dadada;">
+					<div>
+				    <img src="{{$v.Image}}" class="img-responsive" style="height:100px;weight:70px">
+				    <div class="producttitle">{{$v.Title}}</div>
+				    <div class="productprice"><div class="pricetext">{{$v.NOrate}}</div></div>
+				    <div class="producttitle"><button class="btn btn-info btn-sm leftbk" actname="{{$v.Id}}">添加</button></div>
+				    </div>
+				</div>
+			{{end}}
+			
+		</div>
+	</div>
+	
+	<div class="col-md-6">
+		<div class="row">
+			<div class="form-group col-md-8 main-search">
+				<input class="typeahead form-control" type="text" id="bkisbn" placeholder="输入图书ISBN" >
+			</div>
+			<button class="btn btn-success pull-right btn-search" id="searchbk" type="button"><i class="icon-search"></i> 检索图书</button>
+		</div>
+		<div id="searchres" class="row"></div>
+		<hr>
+		<div class="well row">
+		
+			
+			 {{range $k,$v := .bks}}
+					<div class="col-md-3 column productbox " id="rightbk{{$v.Bid}}" style="border-right:1px solid #dadada;">
+						<div>
+					    <img src="{{$v.Image}}" class="img-responsive" style="height:110px;weight:80px">
+					    <div class="producttitle">{{$v.Title}}</div>
+					    <div class="producttitle"><button  actname="{{$v.Bid}}" class="btn btn-info btn-sm rightbk" role="button">添加</button></div>
+					    </div>
+					</div>
+			   {{end}}
+		  		
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+var sell= 0; 
+var want= 0;
+$("body").on("click","#searchbk",function(){
+	isbn = $("#bkisbn").val()
+
+	if(isbn != ""){
+		$.ajax({
+		 url:"/book/searchbook",
+		 type:"post",dataType:"json",
+		 timeout:"10000",
+		 data:{
+		   "Isbn":isbn,
+		 },
+		 success:function(data){
+		 	if(data!=null){
+			   divs = "<div class='col-md-3 column productbox' id='rightbk"+data.Id+"' style='border-right:1px solid #dadada;'><div><img src='"+data.Image+"' class='img-responsive' style='height:110px;weight:80px'><div class='producttitle'>"+data.Title+"</div><div class='producttitle'><button  actname='"+data.Id+"' class='btn btn-info btn-sm rightbk' role='button'>添加</button></div></div></div>";
+				$("#searchres").html(divs);
+			}else{
+				alert("未找到图书，请检查ISBN是否输入正确！");
+			}
+		 }
+		});
+	}else{
+		alert("请输入ISBN！");
+	}
+});
+
+$("body").on("click","#searchbkl",function(){
+	isbn = $("#bkisbnl").val()
+
+	if(isbn != ""){
+		$.ajax({
+		 url:"/book/searchbook",
+		 type:"post",dataType:"json",
+		 timeout:"10000",
+		 data:{
+		   "Isbn":isbn,
+		 },
+		 success:function(data){
+		 	if(data!=null){
+			   divs = "<div class='col-md-3 column productbox' id='leftbk"+data.Id+"' style='border-right:1px solid #dadada;'><div><img src='"+data.Image+"' class='img-responsive' style='height:110px;weight:80px'><div class='producttitle'>"+data.Title+"</div><div class='producttitle'><button  actname='"+data.Id+"' class='btn btn-info btn-sm leftbkl' role='button'>添加</button></div></div></div>";
+				$("#searchresl").html(divs);
+			}else{
+				alert("未找到图书，请检查ISBN是否输入正确！");
+			}
+		 }
+		});
+	}else{
+		alert("请输入ISBN！");
+	}
+});
+
+$("body").on("click",".leftbkl",function(){
+	act = $(this).attr("actname");
+	if(act != ""){
+		$.ajax({
+		 url:"/book/addtoright",
+		 type:"post",dataType:"json",
+		 timeout:"10000",
+		 data:{
+		   "Bid":act
+		 },success:function(data){
+		 	if(want==0){
+			 	divlb = "<div class='col-md-3 column productbox' id='listlbk"+data.Id+"'><img src='"+data.Image+"' class='img-responsive' style='height:110px;weight:80px'><div class='producttitle'>"+data.Title+"</div><div class='productprice'><div class='pull-right'><button actname='"+data.Id+"' class='btn btn-info btn-sm cancelrl' role='button'>撤下</button></div></div></div>"
+			 	$("#leftlist").append(divlb);
+			 	$("#leftbk"+act).hide();
+			 	sell=data.Id;
+			 }else{
+			 	alert("只能添加一本书！")
+			 }
+		 }
+		});
+	}
+});
+
+$("body").on("click",".leftbk",function(){
+	act = $(this).attr("actname");
+	if(act != ""){
+		$.ajax({
+		 url:"/book/addtoleft",
+		 type:"post",dataType:"json",
+		 timeout:"10000",
+		 data:{
+		   "Ivid":act
+		 },success:function(data){
+		 	if(sell==0){
+			 	divlb = "<div class='col-md-3 column productbox' id='listlbk"+data.Id+"'><img src='"+data.Image+"' class='img-responsive' style='height:110px;weight:80px'><div class='producttitle'>"+data.Title+"</div><div class='productprice'><div class='pull-right'><button actname='"+data.Id+"' class='btn btn-info btn-sm cancell' role='button'>撤下</button></div><div class='pricetext'>"+data.NOrate+"</div></div></div>"
+			 	$("#leftlist").append(divlb);
+			 	$("#leftbk"+act).hide();
+			 	sell=data.Bid;
+		 	}else{
+		 		alert("只能添加一本书！")
+		 	}
+		 }
+		});
+	}
+});
+
+$("body").on("click",".cancell",function(){
+	act = $(this).attr("actname");
+	$("#listlbk"+act).remove();
+	$("#leftbk"+act).show();
+	sell=0;
+});
+
+$("body").on("click",".rightbk",function(){
+	act = $(this).attr("actname");
+	if(act != ""){
+		$.ajax({
+		 url:"/book/addtoright",
+		 type:"post",dataType:"json",
+		 timeout:"10000",
+		 data:{
+		   "Bid":act
+		 },success:function(data){
+		 	if(want==0){
+			 	divlb = "<div class='col-md-3 column productbox' id='listrbk"+data.Id+"'><img src='"+data.Image+"' class='img-responsive' style='height:110px;weight:80px'><div class='producttitle'>"+data.Title+"</div><div class='productprice'><div class='pull-right'><button actname='"+data.Id+"' class='btn btn-info btn-sm cancelr' role='button'>撤下</button></div></div></div>"
+			 	$("#rightlist").append(divlb);
+			 	$("#rightbk"+act).hide();
+			 	want=act;
+			 }else{
+			 	alert("只能添加一本书！")
+			 }
+		 }
+		});
+	}
+});
+
+$("body").on("click",".cancelr",function(){
+	act = $(this).attr("actname");
+	$("#listrbk"+act).remove();
+	$("#rightbk"+act).show();
+	want=0;
+});
+
+$("body").on("click",".cancelrl",function(){
+	act = $(this).attr("actname");
+	$("#listlbk"+act).remove();
+	$("#leftbk"+act).show();
+	sell=0;
+});
+
+function check(){
+  if(sell==0&&want==0){
+    alert("请添加搜索条件！");
+    return false;
+  }else if(sell!=0&&want!=0){
+  	alert("两边不能同时有书籍！");
+  	return false;
+  }
+	$("#llist").val(sell);
+	$("#rlist").val(want);
+  return true;
+}
+</script>

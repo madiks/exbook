@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="shortcut icon" href="{{.Favicon}}" />
+		<meta name="description" content="Go online project API documentation, docuemnts, videos" />
+		<meta name="keywords" content="Go, golang, API documentation, video, document">
+
+		 
+		<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+		<link href="/static/css/todc-bootstrap.min.css" rel="stylesheet" />
+		<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+		<link href="/static/css/link.css" rel="stylesheet" />
+		<link href="/static/css/gwserver.css" rel="stylesheet" />
+
+		<script src="/static/js/jquery.min.js"></script>
+		<script src="/static/js/bootstrap.min.js"></script>
+			<title>{{.PageTitle}} - {{.SiteTitle}}</title>
+    </head>
+<body id="body">
+<noscript>Please enable JavaScript in your browser!</noscript>
+<div id="navbar_frame" class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container" style="padding-left: 30px;">
+        <a class="navbar-brand" href="/">
+            同城换书
+            <sub class="version">{{.Region}}</sub>
+        </a>
+        <ul class="nav navbar-nav">
+            <li class="{{if .IsIndex}}active{{end}}">
+                <a href="/">交换</a>
+            </li>
+            
+<!--             <li class="{{if .IsActivity}}active{{end}}">
+                <a href="/activity">同城活动</a>
+            </li> -->
+
+            {{if .IsLogin}}
+            <li class="{{if .IsBookShelf}}active{{end}}">
+               <a href="/bookshelf">我的书架</a>
+            </li>
+             <li class="{{if .IsMyTrade}}active{{end}}">
+               <a href="/mytrade">我的交换{{if .Showofnum}}({{.NewOfferNum}}){{end}}</a>
+            </li>
+             <li class="{{if .IsMyOffer}}active{{end}}">
+               <a href="/myoffer">我的报价{{if .Showrpnum}}({{.NewRpNum}}){{end}}</a>
+            </li>
+             <li class="{{if .IsMyBookMark}}active{{end}}">
+               <a href="/mybookmark">我的收藏</a>
+            </li>
+            <!--  <li class="{{if .IsMyAct}}active{{end}}">
+               <a href="/myact">我的活动</a>
+            </li> -->
+             <li class="{{if .IsSearch}}active{{end}}">
+               <a href="/search">搜索</a>
+            </li>
+            {{end}}
+            <li class="{{if .IsAbout}}active{{end}}">
+                <a href="/about">关于</a>
+            </li>
+             
+
+        </ul>
+
+
+        <ul class="nav navbar-nav pull-right">
+        	{{if .IsLogin}}
+        	 <li class="{{if .IsAddTrade}}active{{end}}">
+               <a href="/addtrade"><span class="glyphicon glyphicon-plus"></span>添加交换</a>
+            </li>
+        	<li>
+				<a href="/myprofile">{{.Uname}}</a>
+			</li>
+			<li>
+				<a href="/logout">退出</a>
+			</li>
+        	{{else}}
+			<li>
+				<a href="/register">注册</a>
+			</li>
+			<li>
+				<a href="/login">登录</a>
+			</li>
+			{{end}}
+		</ul>
+    </div>
+</div>
+<div class="container">
+ {{.LayoutContent}}            
+	
+</div>   
+<footer id="_bottom">
+	<div class="container" style="padding-left: 0px; padding-top: 10px; padding-bottom: 10px;">
+		<div class="col-xs-8 col-md-8" style="width: 450px;">
+			
+
+			<p><strong>Copyright © 2014-2015 同城换书网</strong></p>
+			
+			<p>Website built by <i class="icon-user"></i> <a target="_blank" href="{{.AdminLink}}">@{{.AdminName}}</a>. Powered by <a target="_blank" href="http://gowalker.org/github.com/astaxie/beego"><i class="icon-bold"></i>eego</a>.</p>
+			<p>Based on <a target="_blank" href="http://getbootstrap.com/">Bootstrap</a>. Icons from <a target="_blank" href="http://fortawesome.github.io/Font-Awesome/">Font Awesome</a>.</p>
+			
+
+		</div>
+		
+
+		<div class="col-xs-6 col-md-6" style="margin-top: 25px;">
+			
+		</div>
+		<link href="/static/css/typeahead.js-bootstrap.css" rel="stylesheet" />
+	</div>
+</footer>
+
+</body>
+</html>
+
+
+
